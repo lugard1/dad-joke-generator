@@ -12,10 +12,25 @@ const options = {
 };
 
 async function getJoke() {
-  const response = await fetch(apiUrl, options);
-  const data = await response.json();
-  // console.log(data[0].joke)
-  jokeEl.innerText = data[0].joke;
+  try {
+    jokeEl.innerText = 'Updating...';
+    btnEl.disabled = true;
+    btnEl.innerText = 'Loading';
+    const response = await fetch(apiUrl, options);
+    const data = await response.json();
+    btnEl.disabled = false;
+    btnEl.innerText = 'Tell me a joke';
+
+    // console.log(data[0].joke)
+
+    jokeEl.innerText = data[0].joke;
+  } catch (error) {
+    jokeEl.innerText = 'An error occured, try again later';
+    btnEl.disabled = false;
+    btnEl.innerText = 'Tell me a joke';
+
+    // console.log(error);
+  }
 }
 
 btnEl.addEventListener('click', getJoke);
